@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attendance Form</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        #logo {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        #absentList {
+            margin-top: 20px;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+    <script>
+        (function(){
+            emailjs.init("_wyt_w-H2kQ3T-Dyf");
+        })();
+
+        function submitForm() {
+            var attendance = {};
+            var absentList = [];
+
+            $("input[type='radio']:checked").each(function() {
+                var name = $(this).attr("name");
+                var value = $(this).val();
+                attendance[name] = value;
+                if (value === "Absent") {
+                    absentList.push(name.replace("attendance[", "").replace("]", ""));
+                }
+            });
+
+            if (absentList.length > 0) {
+                var absentNames = absentList.join(", ");
+                var templateParams = {
+                    to_email: 'alvi@mosqueaisha.ca',
+                    subject: 'Attendance Report - Absent Students',
+                    message: 'The following students are absent: ' + absentNames,
+                    from_email: 'portal@mosqueaisha.ca'
+                };
+
+                emailjs.send('service_bohw3gn', 'template_gz57txl', templateParams)
+                    .then(function(response) {
+                        console.log('Success!', response.status, response.text);
+                        alert('Email sent successfully!');
+                    }, function(error) {
+                        console.log('Failed...', error);
+                        alert('Failed to send email.');
+                    });
+            } else {
+                alert('No absent students to report.');
+            }
+
+            updateAbsentList(absentList);
+            return false; // Prevent the form from submitting the traditional way
+        }
+
+        function updateAbsentList(absentList) {
+            var absentDiv = $("#absentList");
+            absentDiv.empty();
+            if (absentList.length > 0) {
+                var list = $("<ul></ul>");
+                absentList.forEach(function(name) {
+                    list.append($("<li></li>").text(name));
+                });
+                absentDiv.append("<h2>Absent Students</h2>");
+                absentDiv.append(list);
+            } else {
+                absentDiv.append("<h2>No absent students</h2>");
+            }
+        }
+    </script>
+</head>
+<body>
+    <div id="logo">
+        <iframe src="https://mosqueaishaadmin.sharepoint.com/sites/MosqueAishaSummerSchool2024/_layouts/15/embed.aspx?UniqueId=85452312-2777-421c-a109-dcc95dd50c53" width="640" height="360" frameborder="0" scrolling="no" allowfullscreen title="masjid logo-cutout"></iframe>
+    </div>
+    <h1>Attendance Form</h1>
+    <form onsubmit="return submitForm();">
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Present</th>
+                    <th>Absent</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Ibrahim Surkhi</td>
+                    <td><input type="radio" name="attendance[Ibrahim Surkhi]" value="Present"></td>
+                    <td><input type="radio" name="attendance[Ibrahim Surkhi]" value="Absent"></td>
+                </tr>
+                <tr>
+                    <td>Mohamed Badia</td>
+                    <td><input type="radio" name="attendance[Mohamed Badia]" value="Present"></td>
+                    <td><input type="radio" name="attendance[Mohamed Badia]" value="Absent"></td>
+                </tr>
+                <tr>
+                    <td>Ihsan Badia</td>
+                    <td><input type="radio" name="attendance[Ihsan Badia]" value="Present"></td>
+                    <td><input type="radio" name="attendance[Ihsan Badia]" value="Absent"></td>
+                </tr>
+                <tr>
+                    <td>Raeef Mufti</td>
+                    <td><input type="radio" name="attendance[Raeef Mufti]" value="Present"></td>
+                    <td><input type="radio" name="attendance[Raeef Mufti]" value="Absent"></td>
+                </tr>
+                <tr>
+                    <td>Gehad Sibai</td>
+                    <td><input type="radio" name="attendance[Gehad Sibai]" value="Present"></td>
+                    <td><input type="radio" name="attendance[Gehad Sibai]" value="Absent"></td>
+                </tr>
+                <tr>
+                    <td>Yaseen Sibai</td>
+                    <td><input type="radio" name="attendance[Yaseen Sibai]" value="Present"></td>
+                    <td><input type="radio" name="attendance[Yaseen Sibai]" value="Absent"></td>
+                </tr>
+                <tr>
+                    <td>Ismael Sibai</td>
+                    <td><input type="radio" name="attendance[Ismael Sibai]" value="Present"></td>
+                    <td><input type="radio" name="attendance[Ismael Sibai]" value="Absent"></td>
+                </tr>
+                <tr>
+                    <td>Isaac Sibai</td>
+                    <td><input type="radio" name="attendance[Isaac Sibai]" value="Present"></td>
+                    <td><input type="radio" name="attendance[Isaac Sibai]" value="Absent"></td>
+                </tr>
+                <tr>
+                    <td>Jacob Sibai</td>
+                    <td><input type="radio" name="attendance[Jacob Sibai]" value="Present"></td>
+                    <td><input type="radio" name="attendance[Jacob Sibai]" value="Absent"></td>
+                </tr>
+                <tr>
+                    <td>Yezzen Sheik yousef</td>
+                    <td><input type="radio" name="attendance[Yezzen Sheik yousef]" value="Present"></td>
+                    <td><input type="radio" name="attendance[Yezzen Sheik yousef]" value="Absent"></td>
+                </tr>
+                <tr>
+                    <td>Razzan Sheik yousef</td>
+                    <td><input type="radio" name="attendance[Razzan Sheik yousef]" value="Present"></td>
+                    <td><input type="radio" name="attendance[Razzan Sheik yousef]" value="Absent"></td>
+                </tr>
+                <tr>
+                    <td>Zayan Moradi</td>
+                    <td><input type="radio" name="attendance[Zayan Moradi]" value="Present"></td>
+                    <td><input type="radio" name="attendance[Zayan Moradi]" value="Absent"></td>
+                </tr>
+                <tr>
+                    <td>Lawin Moradi</td>
+                    <td><input type="radio" name="attendance[Lawin Moradi]" value="Present"></td>
+                    <td><input type="radio" name="attendance[Lawin Moradi]" value="Absent"></td>
+                </tr>
+                <tr>
+                    <td>Viyan Moradi</td>
+                    <td><input type="radio" name="attendance[Viyan Moradi]" value="Present"></td>
+                    <td><input type="radio" name="attendance[Viyan Moradi]" value="Absent"></td>
+                </tr>
+                <tr>
+                    <td>Beverly Haj-Ahmad</td>
+                    <td><input type="radio" name="attendance[Beverly Haj-Ahmad]" value="Present"></td>
+                    <td><input type="radio" name="attendance[Beverly Haj-Ahmad]" value="Absent"></td>
+                </tr>
+                <tr>
+                    <td>Joey Haj-Ahmad</td>
+                    <td><input type="radio" name="attendance[Joey Haj-Ahmad]" value="Present"></td>
+                    <td><input type="radio" name="attendance[Joey Haj-Ahmad]" value="Absent"></td>
+                </tr>
+                <tr>
+                    <td>Lily Haj-Ahmad</td>
+                    <td><input type="radio" name="attendance[Lily Haj-Ahmad]" value="Present"></td>
+                    <td><input type="radio" name="attendance[Lily Haj-Ahmad]" value="Absent"></td>
+                </tr>
+                <tr>
+                    <td>Abdul aziz Majdalawi</td>
+                    <td><input type="radio" name="attendance[Abdul aziz Majdalawi]" value="Present"></td>
+                    <td><input type="radio" name="attendance[Abdul aziz Majdalawi]" value="Absent"></td>
+                </tr>
+                <tr>
+                    <td>Sofia Tariq</td>
+                    <td><input type="radio" name="attendance[Sofia Tariq]" value="Present"></td>
+                    <td><input type="radio" name="attendance[Sofia Tariq]" value="Absent"></td>
+                </tr>
+                <tr>
+                    <td>Sofia Tariq</td>
+                    <td><input type="radio" name="attendance[Sofia Tariq]" value="Present"></td>
+                    <td><input type="radio" name="attendance[Sofia Tariq]" value="Absent"></td>
+                </tr>
+                <tr>
+                    <td>Duaa Elshami</td>
+                    <td><input type="radio" name="attendance[Duaa Elshami]" value="Present"></td>
+                    <td><input type="radio" name="attendance[Duaa Elshami]" value="Absent"></td>
+                </tr>
+                <tr>
+                    <td>Alaa Elshami</td>
+                    <td><input type="radio" name="attendance[Alaa Elshami]" value="Present"></td>
+                    <td><input type="radio" name="attendance[Alaa Elshami]" value="Absent"></td>
+                </tr>
+                <tr>
+                    <td>Leyla El necar</td>
+                    <td><input type="radio" name="attendance[Leyla El necar]" value="Present"></td>
+                    <td><input type="radio" name="attendance[Leyla El necar]" value="Absent"></td>
+                </tr>
+                <tr>
+                    <td>Abdullah El Necar</td>
+                    <td><input type="radio" name="attendance[Abdullah El Necar]" value="Present"></td>
+                    <td><input type="radio" name="attendance[Abdullah El Necar]" value="Absent"></td>
+                </tr>
+                <tr>
+                    <td>Beysen Elhac Ali</td>
+                    <td><input type="radio" name="attendance[Beysen Elhac Ali]" value="Present"></td>
+                    <td><input type="radio" name="attendance[Beysen Elhac Ali]" value="Absent"></td>
+                </tr>
+                <tr>
+                    <td>Bene Elhac Ali</td>
+                    <td><input type="radio" name="attendance[Bene Elhac Ali]" value="Present"></td>
+                    <td><input type="radio" name="attendance[Bene Elhac Ali]" value="Absent"></td>
+                </tr>
+                <tr>
+                    <td>Wasan Khalifeh</td>
+                    <td><input type="radio" name="attendance[Wasan Khalifeh]" value="Present"></td>
+                    <td><input type="radio" name="attendance[Wasan Khalifeh]" value="Absent"></td>
+                </tr>
+                <tr>
+                    <td>Adam Khalifeh</td>
+                    <td><input type="radio" name="attendance[Adam Khalifeh]" value="Present"></td>
+                    <td><input type="radio" name="attendance[Adam Khalifeh]" value="Absent"></td>
+                </tr>
+                <tr>
+                    <td>Mustafa Alnajjar</td>
+                    <td><input type="radio" name="attendance[Mustafa Alnajjar]" value="Present"></td>
+                    <td><input type="radio" name="attendance[Mustafa Alnajjar]" value="Absent"></td>
+                </tr>
+                <tr>
+                    <td>Leyla Alnajjar</td>
+                    <td><input type="radio" name="attendance[Leyla Alnajjar]" value="Present"></td>
+                    <td><input type="radio" name="attendance[Leyla Alnajjar]" value="Absent"></td>
+                </tr>
+                <tr>
+                    <td>Hanan Alnajjar</td>
+                    <td><input type="radio" name="attendance[Hanan Alnajjar]" value="Present"></td>
+                    <td><input type="radio" name="attendance[Hanan Alnajjar]" value="Absent"></td>
+                </tr>
+                <tr>
+                    <td>Abdalla Ali</td>
+                    <td><input type="radio" name="attendance[Abdalla Ali]" value="Present"></td>
+                    <td><input type="radio" name="attendance[Abdalla Ali]" value="Absent"></td>
+                </tr>
+                <tr>
+                    <td>Aisha Asad</td>
+                    <td><input type="radio" name="attendance[Aisha Asad]" value="Present"></td>
+                    <td><input type="radio" name="attendance[Aisha Asad]" value="Absent"></td>
+                </tr>
+                <tr>
+                    <td>Saleh Asad</td>
+                    <td><input type="radio" name="attendance[Saleh Asad]" value="Present"></td>
+                    <td><input type="radio" name="attendance[Saleh Asad]" value="Absent"></td>
+                </tr>
+                <tr>
+                    <td>Ghalya Abdulmuttalib</td>
+                    <td><input type="radio" name="attendance[Ghalya Abdulmuttalib]" value="Present"></td>
+                    <td><input type="radio" name="attendance[Ghalya Abdulmuttalib]" value="Absent"></td>
+                </tr>
+                <tr>
+                    <td>Abdullah Siddiqui</td>
+                    <td><input type="radio" name="attendance[Abdullah Siddiqui]" value="Present"></td>
+                    <td><input type="radio" name="attendance[Abdullah Siddiqui]" value="Absent"></td>
+                </tr>
+                <tr>
+                    <td>AbdulRahman Siddiqui</td>
+                    <td><input type="radio" name="attendance[AbdulRahman Siddiqui]" value="Present"></td>
+                    <td><input type="radio" name="attendance[AbdulRahman Siddiqui]" value="Absent"></td>
+                </tr>
+                <tr>
+                    <td>Abdul Hadi Siddiqui</td>
+                    <td><input type="radio" name="attendance[Abdul Hadi Siddiqui]" value="Present"></td>
+                    <td><input type="radio" name="attendance[Abdul Hadi Siddiqui]" value="Absent"></td>
+                </tr>
+                <tr>
+                    <td>Safa Abdulhafedh</td>
+                    <td><input type="radio" name="attendance[Safa Abdulhafedh]" value="Present"></td>
+                    <td><input type="radio" name="attendance[Safa Abdulhafedh]" value="Absent"></td>
+                </tr>
+                <tr>
+                    <td>Ali Adnan</td>
+                    <td><input type="radio" name="attendance[Ali Adnan]" value="Present"></td>
+                    <td><input type="radio" name="attendance[Ali Adnan]" value="Absent"></td>
+                </tr>
+                <tr>
+                    <td>Aya Abdulhafedh</td>
+                    <td><input type="radio" name="attendance[Aya Abdulhafedh]" value="Present"></td>
+                    <td><input type="radio" name="attendance[Aya Abdulhafedh]" value="Absent"></td>
+                </tr>
+                <tr>
+                    <td>Dina Abdulhafedh</td>
+                    <td><input type="radio" name="attendance[Dina Abdulhafedh]" value="Present"></td>
+                    <td><input type="radio" name="attendance[Dina Abdulhafedh]" value="Absent"></td>
+                </tr>
+                <tr>
+                    <td>Lemar Haj Ahmad</td>
+                    <td><input type="radio" name="attendance[Lemar Haj Ahmad]" value="Present"></td>
+                    <td><input type="radio" name="attendance[Lemar Haj Ahmad]" value="Absent"></td>
+                </tr>
+                <tr>
+                    <td>Mohammad Subhi Haj Ahmad</td>
+                    <td><input type="radio" name="attendance[Mohammad Subhi Haj Ahmad]" value="Present"></td>
+                    <td><input type="radio" name="attendance[Mohammad Subhi Haj Ahmad]" value="Absent"></td>
+                </tr>
+                <tr>
+                    <td>Kinza Raza</td>
+                    <td><input type="radio" name="attendance[Kinza Raza]" value="Present"></td>
+                    <td><input type="radio" name="attendance[Kinza Raza]" value="Absent"></td>
+                </tr>
+                <tr>
+                    <td>Moiz Imran</td>
+                    <td><input type="radio" name="attendance[Moiz Imran]" value="Present"></td>
+                    <td><input type="radio" name="attendance[Moiz Imran]" value="Absent"></td>
+                </tr>
+                <tr>
+                    <td>Abdullah Siddiqui</td>
+                    <td><input type="radio" name="attendance[Abdullah Siddiqui]" value="Present"></td>
+                    <td><input type="radio" name="attendance[Abdullah Siddiqui]" value="Absent"></td>
+                </tr>
+                <tr>
+                    <td>Nurai Abdelkarim</td>
+                    <td><input type="radio" name="attendance[Nurai Abdelkarim]" value="Present"></td>
+                    <td><input type="radio" name="attendance[Nurai Abdelkarim]" value="Absent"></td>
+                </tr>
+                <tr>
+                    <td>AbdulRahman Siddiqui</td>
+                    <td><input type="radio" name="attendance[AbdulRahman Siddiqui]" value="Present"></td>
+                    <td><input type="radio" name="attendance[AbdulRahman Siddiqui]" value="Absent"></td>
+                </tr>
+                <tr>
+                    <td>Aiza Riaz</td>
+                    <td><input type="radio" name="attendance[Aiza Riaz]" value="Present"></td>
+                    <td><input type="radio" name="attendance[Aiza Riaz]" value="Absent"></td>
+                </tr>
+                <tr>
+                    <td>Abyan Riaz</td>
+                    <td><input type="radio" name="attendance[Abyan Riaz]" value="Present"></td>
+                    <td><input type="radio" name="attendance[Abyan Riaz]" value="Absent"></td>
+                </tr>
+                <tr>
+                    <td>Moiz Imran</td>
+                    <td><input type="radio" name="attendance[Moiz Imran]" value="Present"></td>
+                    <td><input type="radio" name="attendance[Moiz Imran]" value="Absent"></td>
+                </tr>
+                <tr>
+                    <td>Al-Hameen Akiode</td>
+                    <td><input type="radio" name="attendance[Al-Hameen Akiode]" value="Present"></td>
+                    <td><input type="radio" name="attendance[Al-Hameen Akiode]" value="Absent"></td>
+                </tr>
+                <tr>
+                    <td>Al-Hazeem Akiode</td>
+                    <td><input type="radio" name="attendance[Al-Hazeem Akiode]" value="Present"></td>
+                    <td><input type="radio" name="attendance[Al-Hazeem Akiode]" value="Absent"></td>
+                </tr>
+            </tbody>
+        </table>
+        <input type="hidden" id="__REQUESTDIGEST" value="">
+        <button type="submit">Submit Attendance</button>
+    </form>
+    <div id="absentList">
+        <h2>Absent Students</h2>
+        <ul></ul>
+    </div>
+</body>
+</html>
